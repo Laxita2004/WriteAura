@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Quicksand:wght@300..700&family=Satisfy&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <title>WriteAura: Book Review Website</title>
+</head>
+<body>
+    <h2 class="add-book-head">Add Your Review Here:</h2>
+    <form action="/add" method="POST" enctype="multipart/form-data">
+        <div class="form-group">
+            <label for="title" class="label-text">Book Title:</label>
+            <input type="text" name="title" id="title" required>
+        </div>
+    
+        <div class="form-group">
+            <label for="author" class="label-text">Book Author:</label>
+            <input type="text" name="author" id="author" required>
+        </div> 
+
+        <div class="form-group">
+            <label for="reviewer" class="label-text">Reviewer:</label>
+            <input type="text" name="reviewer" id="reviewer" required> <!-- Changed from author to reviewer -->
+        </div>
+    
+        <div class="form-group">
+            <label for="content" class="label-text">Your Review:</label>
+            <textarea name="content" id="content" required></textarea>
+        </div>
+
+        <div class="form-group">
+            <label for="genres" class="label-text">Genres (comma-separated):</label>
+            <input type="text" id="genres" name="genres" placeholder="e.g., Fantasy, Sci-Fi, Thriller"><br>
+        </div>
+
+        <div class="form-group">
+            <label for="verdict" class="label-text">Your Final Verdict:</label>
+            <input type="text" id="verdict" name="verdict" placeholder="Should someone get this book?" required><br>
+        </div>
+
+        <div class="form-group">
+            <label for="cover" class="label-text">Cover Image:</label>
+            <input type="file" name="cover" id="cover" accept="image/*" required style="display: none">
+            <label for="cover" class="custom-file-upload">
+                <i class="fa-solid fa-upload"></i> Choose File
+            </label>
+        </div>
+
+        <button type="submit" class="publish-btn">Publish</button>
+    </form>
+    
+    <div class="add-new-book">
+        <a href="/" class="book-btn go-back">
+            <i class="fa-solid fa-arrow-left"></i>
+            <span>Go Back</span>
+        </a>
+    </div>
+</body>
+</html>

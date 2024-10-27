@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Quicksand:wght@300..700&family=Satisfy&family=Updock&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Handlee&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Quicksand:wght@300..700&family=Satisfy&family=Updock&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <title><%= book.title %></title>
+</head>
+<body>
+    <h1 class="book-head"><%= book.title %></h1>
+    <div class="by-line">Book Author: <%= book.author %></div>
+    <div class="by-line">Review By: <%= book.reviewer %></div>
+
+    <% if (book.genres && book.genres.length > 0) { %>
+        <div>
+            <div class="genres-container">
+                <% book.genres.forEach(genre => { %>
+                    <div class="genre-tag"><%= genre %></div>
+                <% }) %>
+            </div>
+        </div>
+    <% } %>
+    
+
+    <div class="book-body">
+        <img src="<%= book.cover %>" alt="Book Cover">
+        <p class="book-content"><%= book.content %></p>
+    </div>
+
+    <div class="final-verdict">
+        <h3>Should you get it?</h3>
+        <p><%= book.verdict ? book.verdict : "No verdict available." %></p>
+    </div>
+
+    <div class="aura-points">
+        <button class="aura-btn" onClick="upvoteBook('<%= book._id %>')">
+            <i class="fas fa-star" id="sparkles-icon-<%= book._id %>" style="color: #808080;"></i> 
+            <span id="aura-count-<%= book._id %>" class="aura-count"><%= book.auraPoints %></span>
+        </button>
+        
+    </div>
+    
+    <div class="add-new-book">
+        <a href="/" class="book-btn go-back" >
+            <i class="fa-solid fa-arrow-left"></i>
+            <span>Go Back</span>
+        </a>
+    </div>
+
+    <script>
+        const bookId = '<%= book._id %>'
+    </script>
+    <script src="/js/upvote.js"></script>
+</body>
+</html>
