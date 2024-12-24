@@ -3,12 +3,16 @@ const bodyParser = require('body-parser');
 const multer = require('multer');
 const path = require('path');
 const app = express();
-const Book = require('./config/db');  // Assuming the model is in the config folder
+const Book = require('./config/db');  
 const mongoose = require('mongoose');
+require("dotenv").config();
+const https = require("https");
 
 app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static('public'));
+app.use(express.json());
+
 
 // Serve the uploads folder as a static directory
 app.use('/uploads', express.static(path.join(__dirname, 'public/uploads')));
@@ -42,32 +46,28 @@ app.get('/add', (req, res) => {
 });
 
 // Handle review submission
-app.post('/add', upload.single('cover'), async (req, res) => {
+app.post("/add", upload.single("cover"), async (req, res) => {
     try {
-        
-        // console.log('Genres received from form:', req.body.genres);  // Specific check for genres
-        
-        // Split the genres string into an array, trimming spaces
-        const genresArray = req.body.genres ? req.body.genres.split(',').map(genre => genre.trim()) : [];
-        // console.log('Parsed genres array:', genresArray);
-
-        const book = new Book({
-            title: req.body.title,
-            content: req.body.content,
-            author: req.body.author,
-            reviewer: req.body.reviewer,
-            genres: genresArray, 
-            verdict,
-            cover: req.file ? '/uploads/' + req.file.filename : null
-        });
-
-        await book.save();  // Save book to the database
-        res.redirect('/');
+      const genresArray = req.body.genres
+        ? req.body.genres.split(",").map((genre) => genre.trim())
+        : [];
+      const book = new Book({
+        title: req.body.title,
+        content: req.body.content,
+        author: req.body.author,
+        reviewer: req.body.reviewer,
+        genres: genresArray,
+        verdict: req.body.verdict,
+        cover: req.file ? "/uploads/" + req.file.filename : null,
+      });
+  
+      await book.save();
+      res.redirect("/");
     } catch (err) {
-        console.log(err);
-        res.status(500).send('An error occurred while adding the book.');
+      console.log(err);
+      res.status(500).send("An error occurred while adding the book.");
     }
-});
+  });
 
 
 // Single book route
@@ -128,6 +128,68 @@ app.post('/books/:bookId/upvote', async (req, res) => {
         res.status(500).json({ success: false, message: 'Error updating aura points' });
     }
 });
+
+app.get("/apiKey", (req, res) => {
+    res.json({ apiKey: process.env.OPENAI_API_KEY });
+  });
+  
+  app.get("/bookRec", (req, res) => {
+    res.render("bookRec");
+  });
+  
+  app.post("/api/chat", (req, res) => {
+    console.log("Request received with prompt:", req.body.prompt);
+    const { prompt } = req.body;
+  
+    const data = JSON.stringify({
+      model: "gpt-3.5-turbo",
+      messages: [{ role: "user", content: prompt }],
+      temperature: 0.7,
+    });
+  
+    const options = {
+      hostname: "api.openai.com",
+      path: "/v1/chat/completions",
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
+        "Content-Length": Buffer.byteLength(data),
+      },
+    };
+  
+    const request = https.request(options, (response) => {
+      let body = "";
+  
+      response.on("data", (chunk) => {
+        body += chunk;
+      });
+  
+      response.on("end", () => {
+        console.log("Response from OpenAI:", body); // Log the entire response
+        const result = JSON.parse(body);
+        console.log("Parsed result:", result); // Log the parsed result
+  
+        // Check if the choices array exists and has at least one element
+        if (result.choices && result.choices.length > 0) {
+          res.json(result.choices[0].message.content);
+        } else {
+          console.error("No choices available in response:", result);
+          res.status(500).json({ error: "No choices available in response." });
+        }
+      });
+    });
+  
+    request.on("error", (error) => {
+      console.error("Error with the request:", error);
+      res.status(500).json({ error: "Error fetching AI response" });
+    });
+  
+    // Write data to request body
+    request.write(data);
+    request.end();
+  });
+  
 
 app.listen(3000, () => {
     console.log('Server is listening on PORT 3000');

@@ -13,45 +13,48 @@
     <title><%= book.title %></title>
 </head>
 <body>
-    <h1 class="book-head"><%= book.title %></h1>
-    <div class="by-line">Book Author: <%= book.author %></div>
-    <div class="by-line">Review By: <%= book.reviewer %></div>
-
-    <% if (book.genres && book.genres.length > 0) { %>
-        <div>
-            <div class="genres-container">
-                <% book.genres.forEach(genre => { %>
-                    <div class="genre-tag"><%= genre %></div>
-                <% }) %>
+    <div class="index">
+        <h1 class="book-head"><%= book.title %></h1>
+        <div class="by-line">Book Author: <%= book.author %></div>
+        <div class="by-line">Review By: <%= book.reviewer %></div>
+    
+        <% if (book.genres && book.genres.length > 0) { %>
+            <div>
+                <div class="genres-container">
+                    <% book.genres.forEach(genre => { %>
+                        <div class="genre-tag"><%= genre %></div>
+                    <% }) %>
+                </div>
             </div>
-        </div>
-    <% } %>
-    
-
-    <div class="book-body">
-        <img src="<%= book.cover %>" alt="Book Cover">
-        <p class="book-content"><%= book.content %></p>
-    </div>
-
-    <div class="final-verdict">
-        <h3>Should you get it?</h3>
-        <p><%= book.verdict ? book.verdict : "No verdict available." %></p>
-    </div>
-
-    <div class="aura-points">
-        <button class="aura-btn" onClick="upvoteBook('<%= book._id %>')">
-            <i class="fas fa-star" id="sparkles-icon-<%= book._id %>" style="color: #808080;"></i> 
-            <span id="aura-count-<%= book._id %>" class="aura-count"><%= book.auraPoints %></span>
-        </button>
+        <% } %>
         
+    
+        <div class="book-body">
+            <img src="<%= book.cover %>" alt="Book Cover">
+            <div class="book-content"><%- book.content %></div>
+        </div>
+    
+        <div class="final-verdict">
+            <h3>Should you get it?</h3>
+            <p><%= book.verdict ? book.verdict : "No verdict available." %></p>
+        </div>
+    
+        <div class="aura-points">
+            <button class="aura-btn" onClick="upvoteBook('<%= book._id %>')">
+                <i class="fas fa-star" id="sparkles-icon-<%= book._id %>" style="color: #808080;"></i> 
+                <span id="aura-count-<%= book._id %>" class="aura-count"><%= book.auraPoints %></span>
+            </button>
+            
+        </div>
+        
+        <div class="add-new-book">
+            <a href="/" class="read-more" >
+                <i class="fa-solid fa-arrow-left"></i>
+                <span>Go Back</span>
+            </a>
+        </div>
     </div>
     
-    <div class="add-new-book">
-        <a href="/" class="book-btn go-back" >
-            <i class="fa-solid fa-arrow-left"></i>
-            <span>Go Back</span>
-        </a>
-    </div>
 
     <script>
         const bookId = '<%= book._id %>'

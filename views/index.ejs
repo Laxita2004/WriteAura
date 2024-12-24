@@ -1,41 +1,72 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/css/styles.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/css/styles.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
     <title>WriteAura: Book Review Website</title>
-</head>
-<body>
-    <div class="heading-container">
-        <h1 class="site-name">Write<span class="pink-text">Aura</span></h1>
-    </div>
+  </head>
+  <body>
     
-    <div class="add-new-book">
-        <a href="/add" class="book-btn">
-            <i class="fas fa-plus-circle"></i>
-            <span>Add Your Review</span>
-        </a>
+    <div class="heading-container">
+      <h1 class="site-name">Write<span class="pink-text">Aura</span></h1>
     </div>
 
-    <div class="book-container">
-        <% books.forEach((book, index) => { %>
-            <div class="book-card">
-                <img src="<%= book.cover %>" alt="Cover of <%= book.title %>" class="book-cover">
-                <h3 class="book-heading"><%= book.title %></h3>
-                <p class="book-description">
-                    <%= book.content.split(' ').slice(0, 20).join(' ') + '...' %>
-                </p>
-                <a href="/books/<%= book._id %>" class="read-more">Read More</a>
-            </div>
-        <% }); %>
+    <div id="openAI" class="laina">
+      <img src="/image/ute (2).png" alt="Open AI Laina" />
     </div>
+
+    <div class="index">
+      <div class="add-new-book" >
+        <a href="/add" class="read-more" >
+          <i class="fas fa-plus-circle"></i>
+          <span>Add Your Review</span>
+        </a>
+      </div>
+  
+      <div class="book-container">
+        <% books.forEach((book, index) => { %>
+        <div class="book-card">
+          <img
+            src="<%= book.cover %>"
+            alt="Cover of <%= book.title %>"
+            class="book-cover"
+          />
+          <h3 class="book-heading"><%= book.title %></h3>
+          <p class="book-description">
+            <%- book.content.split(' ').slice(0, 20).join(' ') + '...' %>
+          </p>
+          <a href="/books/<%= book._id %>" class="read-more">Read More</a>
+        </div>
+        <% }); %>
+      </div>
+    </div>
+
     
-   
-    
-</body>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const openAIElement = document.getElementById("openAI");
+        if (openAIElement) {
+          console.log("openAI element found!");
+          openAIElement.addEventListener("click", function () {
+            console.log("Icon clicked! Redirecting...");
+            window.location.href = "/bookRec";
+          });
+        } else {
+          console.log("openAI element not found.");
+        }
+      });
+    </script>
+  </body>
 </html>
